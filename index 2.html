@@ -1,0 +1,586 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Chang gang Элсэлтийн Анкет</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: single column, night-city dossier look (deliberately dark only). Applicants see the form; the owner gets tabs: form · applicants · settings */
+:root{
+  --bg:#060606; --surface:rgba(22,22,26,.62); --surface2:rgba(255,255,255,.05); --fg:#f1efe9; --muted:#9a978f; --line:rgba(255,255,255,.10);
+  --accent:#f2b705; --accent-ink:#141006; --accent-soft:#2e2608;
+  --ok:#4fd18b; --ok-soft:#12301f; --warn:#f29a3a; --warn-soft:#33220f; --bad:#ff5c6c; --bad-soft:#3a1519; --info:#6fa8ff; --info-soft:#15233a;
+  --display:"Oswald","Arial Narrow",Impact,sans-serif;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:660px;margin:0 auto;display:grid;gap:18px;position:relative;z-index:1}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.vignette{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.75) 100%)}
+.card,.app,.banner{backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);box-shadow:0 20px 60px -20px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
+header{padding-block:48px 12px}
+header h1{font-size:clamp(44px,11vw,84px);line-height:.92;background:linear-gradient(180deg,#fff 0%,#c9c4b8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+header h1 span{background:linear-gradient(180deg,#ffd54a,#e08a00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-flex;align-items:center;gap:8px;width:fit-content;border:1px solid var(--line);border-radius:99px;padding:5px 12px;background:var(--surface2)}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+/* marquee */
+.marquee{overflow:hidden;border-block:1px solid var(--line);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-block:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee div{display:flex;gap:40px;width:max-content;animation:slide 32s linear infinite;font-family:var(--display);text-transform:uppercase;letter-spacing:.18em;font-size:14px;color:var(--muted)}
+.marquee b{color:var(--accent);font-weight:500}
+@keyframes slide{to{transform:translateX(-50%)}}
+/* stats under hero */
+.hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.hero-stats div{border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:10px 14px;display:grid;gap:2px;min-width:110px;flex:1}
+.hero-stats b{font-family:var(--display);font-size:24px;font-weight:500;color:var(--fg)}
+.hero-stats small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+/* sticky progress */
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:-4px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(10,10,12,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:grid;gap:8px}
+.progress-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.progress-top b{font-family:var(--mono);color:var(--accent);font-size:14px;letter-spacing:0}
+.track{height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e08a00,#ffd54a);box-shadow:0 0 12px #f2b705;transition:width .4s cubic-bezier(.2,.7,.2,1)}
+.steps{display:flex;gap:6px}
+.steps span{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.08);transition:background .3s}
+.steps span.done{background:var(--accent)}
+/* spotlight cards */
+.card,.app{position:relative;overflow:hidden}
+.card::after,.app::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(242,183,5,.10),transparent 60%)}
+.card:hover::after,.app:hover::after{opacity:1}
+.card>*,.app>*{position:relative;z-index:1}
+/* section numbers glow */
+.sec h2 i{box-shadow:0 0 18px rgba(242,183,5,.45)}
+.sec h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+/* custom range */
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:linear-gradient(90deg,#e08a00 0%,#ffd54a var(--p,50%),rgba(255,255,255,.1) var(--p,50%));cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--accent);box-shadow:0 0 0 6px rgba(242,183,5,.18),0 4px 12px rgba(0,0,0,.6)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--accent);box-shadow:0 0 0 6px rgba(242,183,5,.18)}
+.slider output{transition:transform .15s}
+.slider output.bump{transform:scale(1.18)}
+/* quiz options */
+.q label{transition:border-color .2s,background .2s,transform .15s}
+.q label:hover{border-color:rgba(242,183,5,.4)}
+.q label:has(input:checked){border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent) inset}
+/* inputs glow on focus */
+input:focus,select:focus,textarea:focus{border-color:rgba(242,183,5,.6);box-shadow:0 0 0 4px rgba(242,183,5,.12)}
+/* shimmer button */
+button.big{position:relative;overflow:hidden;background:linear-gradient(90deg,#e08a00,#ffd54a,#e08a00);background-size:200% 100%;box-shadow:0 10px 40px -10px rgba(242,183,5,.7)}
+button.big::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 3.2s ease-in-out infinite}
+@keyframes shine{0%,60%{left:-60%}100%{left:130%}}
+button.big:hover{background-position:100% 0}
+/* result stamp */
+.stamp{justify-self:start;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:26px;color:var(--accent);border:3px solid var(--accent);border-radius:6px;padding:4px 14px;transform:rotate(-4deg);animation:stamp .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes stamp{from{transform:rotate(-4deg) scale(2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.marquee div,button.big::before,.stamp{animation:none}.track i{transition:none}}
+.reveal{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:.001;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){.reveal,.tag::before{animation:none}}
+header{display:grid;gap:6px}
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+h1{font-family:var(--display);font-size:42px;line-height:1;margin:0;text-transform:uppercase;letter-spacing:.02em;text-wrap:balance}
+h1 span{color:var(--accent)}
+header p{margin:0;color:var(--muted);max-width:60ch}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:700;padding:8px 14px;border-radius:6px}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.sec{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.sec+.sec{margin-top:26px;padding-top:22px;border-top:1px dashed var(--line)}
+.sec h2{grid-column:1/-1;margin:0;font-family:var(--display);font-size:18px;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:10px}
+.sec h2 i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--accent-ink);background:var(--accent);border-radius:4px;padding:1px 7px}
+.full{grid-column:1/-1}
+.field{display:grid;gap:6px;font-size:13px;font-weight:700;color:var(--muted)}
+.field .req{color:var(--accent)}
+.hint{font-weight:500;font-size:12px;color:var(--muted)}
+input,select,textarea{font:inherit;color:var(--fg);background:var(--surface2);border:1px solid var(--line);border-radius:7px;padding:10px 12px;width:100%;font-weight:500}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;font-weight:800;cursor:pointer;border:0;border-radius:7px;padding:12px 16px;background:var(--accent);color:var(--accent-ink)}
+button:disabled{opacity:.6;cursor:default}
+.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.small{padding:6px 10px;font-size:13px}
+.big{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:18px;padding:14px}
+/* slider */
+.slider{display:grid;gap:8px}
+.slider-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.slider output{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:20px}
+.slider output small{font-size:12px;color:var(--muted);font-weight:500;margin-left:6px;font-family:var(--sans)}
+input[type=range]{accent-color:var(--accent);padding:0;background:none;border:0}
+/* chip toggles */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chips span{display:inline-block;border:1px solid var(--line);background:var(--surface2);border-radius:99px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--muted)}
+.chips input:checked+span{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.chips input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+/* quiz */
+.quiz{display:grid;gap:14px}
+.q{display:grid;gap:8px}
+.q b{font-size:14px}
+.q .opts{display:grid;gap:6px}
+.q label{display:flex;gap:10px;align-items:flex-start;background:var(--surface2);border:1px solid var(--line);border-radius:7px;padding:9px 12px;font-size:14px;cursor:pointer}
+.q input{width:auto;margin-top:3px;accent-color:var(--accent)}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.agree input{width:auto;margin-top:3px;accent-color:var(--accent)}
+.err{color:var(--bad);font-size:13px;margin:0}
+.banner{border-radius:10px;padding:16px;display:grid;gap:10px;background:var(--surface);border:1px solid var(--accent)}
+.banner h2{margin:0;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+.note{font-size:13px;color:var(--muted)}
+pre.copy{white-space:pre-wrap;font-family:var(--mono);font-size:12.5px;background:var(--surface2);border:1px solid var(--line);border-radius:7px;padding:12px;margin:0;overflow-x:auto;user-select:all;max-height:340px;overflow-y:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* list */
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface2);color:var(--fg);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.chip span{font-family:var(--mono);margin-left:4px}
+.apps{display:grid;gap:12px}
+.app{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:12px}
+.app-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.app h3{margin:0;font-family:var(--display);font-size:22px;text-transform:uppercase;letter-spacing:.03em}
+.meta{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.meta .num{font-family:var(--mono);color:var(--fg);user-select:all}
+.pill{font-size:12px;font-weight:800;border-radius:99px;padding:3px 10px;white-space:nowrap}
+.s-new{background:var(--info-soft);color:var(--info)}
+.s-try{background:var(--warn-soft);color:var(--warn)}
+.s-yes{background:var(--ok-soft);color:var(--ok)}
+.s-no{background:var(--bad-soft);color:var(--bad)}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.score{background:var(--surface2);border-radius:7px;padding:8px 10px;display:grid;gap:4px}
+.score small{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.score b{font-family:var(--mono);font-size:16px}
+.bar{height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.app dl{margin:0;display:grid;gap:8px}
+.app dt{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.app dd{margin:0;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.app dd a{color:var(--info)}
+.app-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:10px}
+.app-actions select{width:auto;padding:6px 10px;font-size:13px}
+.danger{background:var(--bad);color:#1a0508}
+.empty{text-align:center;color:var(--muted);padding:28px 12px}
+@media (max-width:500px){.sec{grid-template-columns:1fr}.scores{grid-template-columns:1fr 1fr 1fr}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+/* ===== Button animations ===== */
+button,.chips span,.q label,.chip{transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background-color .25s,border-color .25s,color .25s,filter .25s}
+button{position:relative;overflow:hidden;isolation:isolate}
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px -10px rgba(242,183,5,.6);filter:brightness(1.06)}
+button:active:not(:disabled){transform:translateY(0) scale(.95);transition-duration:.06s}
+.ghost:hover:not(:disabled){border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px rgba(242,183,5,.12)}
+/* ripple */
+.ripple{position:absolute;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.45);transform:scale(0);animation:ripple .6s ease-out forwards;z-index:-1}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+/* big submit: breathing glow + arrow */
+button.big{animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 10px 50px -6px rgba(242,183,5,.95)}}
+button.big::after{content:"→";display:inline-block;margin-left:10px;transition:transform .25s}
+button.big:hover::after{transform:translateX(6px)}
+button.big.loading::after{content:"";width:16px;height:16px;border:3px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-3px;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+button.big.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+/* tabs */
+.tabs button[aria-selected="true"]{animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.88)}100%{transform:scale(1)}}
+/* chips & quiz options */
+.chips label:hover span{border-color:rgba(242,183,5,.5);transform:translateY(-2px)}
+.chips input:checked+span{animation:pop .35s cubic-bezier(.2,1.6,.4,1);box-shadow:0 0 16px -2px rgba(242,183,5,.55)}
+.chips input:checked+span::before{content:"✓ "}
+.q label:hover{transform:translateX(4px)}
+.q label:active{transform:scale(.98)}
+.q label:has(input:checked){animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+.chip:hover{transform:translateY(-2px);border-color:rgba(242,183,5,.5)}
+.chip[aria-pressed="true"]{animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+/* copy success */
+button.copied{background:var(--ok)!important;color:#05140b!important;animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+/* delete confirm */
+.danger{animation:shake .4s}
+@media (prefers-reduced-motion:reduce){button,button.big,.tabs button,.chips span,.q label,.chip,.danger,.ripple{animation:none!important;transition:none!important}button:hover:not(:disabled),.chips label:hover span,.q label:hover,.chip:hover{transform:none}}
+</style>
+
+<canvas id="fx" aria-hidden="true"></canvas><div class="grain"></div><div class="vignette"></div>
+<div class="wrap">
+  <header class="reveal">
+    <span class="tag" id="server-tag">FiveM · Mgrande сервер</span>
+    <h1><span id="gang-name">Ганг</span> элсэлт</h1>
+    <div class="hero-stats">
+      <div><small>Элсэлт</small><b style="color:var(--ok)">Нээлттэй</b></div>
+      <div><small>Хугацаа</small><b>~7 мин</b></div>
+      <div><small>Шалгалт</small><b>5 асуулт</b></div>
+    </div>
+    <p id="intro">Манай бүлэгт нэгдэх үү? Анкетаа үнэн зөв бөглө. Шалгарсан хүнтэй Discord-оор холбогдоно.</p>
+  </header>
+
+  <div class="marquee" aria-hidden="true"><div id="mq"></div></div>
+
+  <nav class="tabs" id="tabs" role="tablist" hidden>
+    <button role="tab" id="tab-form" aria-selected="true" data-view="form">Анкет</button>
+    <button role="tab" id="tab-list" aria-selected="false" data-view="list">Элсэгчид <span id="tab-count"></span></button>
+    <button role="tab" id="tab-settings" aria-selected="false" data-view="settings">Тохиргоо</button>
+  </nav>
+
+  <!-- FORM -->
+  <section id="view-form" class="card reveal" style="animation-delay:.15s">
+    <p id="owner-hint" class="note" style="margin:0 0 18px" hidden>Та эзэн нь тул эндээс илгээсэн анкет шууд "Элсэгчид" рүү орно. Discord-оор ирсэн анкетыг ч эндээс бүртгэж болно.</p>
+    <div class="progress" id="progress">
+      <div class="progress-top"><span id="prog-label">Хувийн мэдээлэл</span><b id="prog-pct">0%</b></div>
+      <div class="track"><i id="prog-bar"></i></div>
+      <div class="steps" id="steps"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <form id="form" novalidate style="margin-top:18px">
+      <div class="sec">
+        <h2><i>01</i>Хувийн мэдээлэл</h2>
+        <label class="field" for="f-ic">Дүрийн нэр (IC) <span class="req">*</span><input id="f-ic" required maxlength="40" placeholder="Tony Batbold"></label>
+        <label class="field" for="f-discord">Discord нэр <span class="req">*</span><input id="f-discord" required maxlength="40" placeholder="tony_007"></label>
+        <label class="field" for="f-age">Жинхэнэ нас (OOC) <span class="req">*</span><input id="f-age" required inputmode="numeric" maxlength="2" placeholder="19"></label>
+        <label class="field" for="f-hours">FiveM дээр тоглосон цаг<select id="f-hours">
+          <option>100 цагаас бага</option><option>100–500 цаг</option><option>500–1000 цаг</option><option>1000–2000 цаг</option><option>2000+ цаг</option>
+        </select></label>
+        <label class="field full" for="f-since">Энэ сервер дээр хэр удаж байгаа вэ<select id="f-since">
+          <option>Саяхан орсон</option><option>1 сар хүрэхгүй</option><option>1–3 сар</option><option>3–6 сар</option><option>6 сараас дээш</option>
+        </select></label>
+      </div>
+
+      <div class="sec">
+        <h2><i>02</i>Ур чадвар</h2>
+        <div class="slider full">
+          <div class="slider-top"><label class="field" for="f-aim">Хэр сайн буудаг вэ <span class="hint">өөрийгөө үнэнээр үнэл</span></label><output id="o-aim">5<small></small></output></div>
+          <input id="f-aim" type="range" min="1" max="10" value="5">
+        </div>
+        <div class="slider full">
+          <div class="slider-top"><label class="field" for="f-drive">Машин барих, хөөцөлдөөнөөс зугтах</label><output id="o-drive">5<small></small></output></div>
+          <input id="f-drive" type="range" min="1" max="10" value="5">
+        </div>
+        <div class="slider full">
+          <div class="slider-top"><label class="field" for="f-rp">RP чадвар (дүрдээ орох, ярих)</label><output id="o-rp">5<small></small></output></div>
+          <input id="f-rp" type="range" min="1" max="10" value="5">
+        </div>
+        <label class="field full" for="f-weapon">Хамгийн сайн хэрэглэдэг зэвсэг<select id="f-weapon">
+          <option>Гар буу</option><option>SMG</option><option>Автомат буу</option><option>Shotgun</option><option>Мэс / ойрын тулаан</option><option>Бүгдийг адил</option>
+        </select></label>
+      </div>
+
+      <div class="sec">
+        <h2><i>03</i>Харилцаа</h2>
+        <label class="field" for="f-mic">Микрофон<select id="f-mic">
+          <option>Сайн, тод сонсогддог</option><option>Дунд зэрэг</option><option>Заримдаа асуудалтай</option><option>Микрофонгүй</option>
+        </select></label>
+        <label class="field" for="f-lang">Ярьдаг хэл<select id="f-lang">
+          <option>Монгол</option><option>Монгол, англи</option><option>Англи</option>
+        </select></label>
+        <label class="field full" for="f-comm">Харилцааны дутагдал байгаа юу? <span class="hint">Жишээ: ичимхий, амархан уурладаг, чимээгүй байдаг</span><textarea id="f-comm" maxlength="500" placeholder="Байхгүй бол 'Байхгүй' гэж бич"></textarea></label>
+        <div class="field full">Ихэвчлэн хэзээ тоглодог вэ <span class="req">*</span>
+          <div class="chips" id="f-time">
+            <label><input type="checkbox" value="Өглөө"><span>Өглөө</span></label>
+            <label><input type="checkbox" value="Өдөр"><span>Өдөр</span></label>
+            <label><input type="checkbox" value="Орой"><span>Орой</span></label>
+            <label><input type="checkbox" value="Шөнө"><span>Шөнө</span></label>
+            <label><input type="checkbox" value="Амралтын өдөр"><span>Амралтын өдөр</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h2><i>04</i>Туршлага</h2>
+        <label class="field full" for="f-prev">Өмнө ямар бүлэг, гангт байсан бэ? Яагаад гарсан бэ?<textarea id="f-prev" maxlength="600" placeholder="Байгаагүй бол 'Байгаагүй' гэж бич"></textarea></label>
+        <label class="field full" for="f-ban">Сервер дээр бан, warn авч байсан уу?<select id="f-ban">
+          <option>Үгүй</option><option>Warn авч байсан</option><option>Бан авч байсан</option>
+        </select></label>
+        <label class="field full" for="f-clip">Буудлага, RP-ийн клип (заавал биш)<input id="f-clip" maxlength="200" placeholder="YouTube, Medal, TikTok линк"></label>
+      </div>
+
+      <div class="sec">
+        <h2><i>05</i>Дүрмийн шалгалт</h2>
+        <div class="quiz full" id="quiz"></div>
+      </div>
+
+      <div class="sec">
+        <h2><i>06</i>Нөхцөл байдал</h2>
+        <label class="field full" for="f-sc1">Хамт явсан найзыг чинь цагдаа барьчихлаа. Чи юу хийх вэ? <span class="req">*</span><textarea id="f-sc1" maxlength="800"></textarea></label>
+        <label class="field full" for="f-sc2">Өөр гангийн хүн танай нутаг дэвсгэрт ирээд доромжилж байна. Яах вэ?<textarea id="f-sc2" maxlength="800"></textarea></label>
+        <label class="field full" for="f-why">Яагаад манай бүлэгт орох гэж байна? Юугаараа хувь нэмэр оруулах вэ? <span class="req">*</span><textarea id="f-why" maxlength="800"></textarea></label>
+        <label class="agree full"><input type="checkbox" id="f-agree"><span>Бүлгийн дүрэм, серверийн дүрмийг дагаж, ахлагчийн үгэнд орно. OOC асуудлаа тоглоом дотор авчрахгүй.</span></label>
+      </div>
+
+      <p id="form-error" class="err" style="margin-top:16px" hidden></p>
+      <button class="big" type="submit" id="submit" style="width:100%;margin-top:18px">Анкет илгээх</button>
+    </form>
+  </section>
+
+  <section id="result" hidden></section>
+
+  <!-- LIST -->
+  <section id="view-list" hidden>
+    <div class="card" style="display:grid;gap:12px">
+      <div class="filters" id="filters"></div>
+      <div class="row">
+        <input id="search" type="search" placeholder="IC нэр, Discord-оор хайх" style="flex:1;min-width:180px">
+        <select id="sort" style="width:auto"><option value="new">Шинэ нь эхэндээ</option><option value="aim">Буудлагаар</option><option value="quiz">Шалгалтаар</option><option value="total">Нийт оноогоор</option></select>
+      </div>
+    </div>
+    <div class="apps" id="apps" style="margin-top:12px"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="view-settings" class="card" hidden>
+    <form id="settings-form" style="display:grid;gap:14px">
+      <label class="field" for="s-name">Бүлгийн нэр<input id="s-name" maxlength="40" placeholder="Жишээ: Black Wolves"></label>
+      <label class="field" for="s-server">Серверийн нэр<input id="s-server" maxlength="40" placeholder="Mongol Grande"></label>
+      <label class="field" for="s-discord">Анкет хүлээж авах Discord нэр эсвэл урилгын линк<input id="s-discord" maxlength="120" placeholder="boss_ganbaa эсвэл discord.gg/..."></label>
+      <label class="field" for="s-minage">Хамгийн бага нас<input id="s-minage" inputmode="numeric" maxlength="2" placeholder="16"></label>
+      <div class="row"><button type="submit" id="s-save">Хадгалах</button><span id="s-msg" class="note"></span></div>
+    </form>
+  </section>
+</div>
+
+<script>
+const DEFAULTS={name:"Chang gang",server:"Mgrande",discord:"",minAge:""};
+const STATUSES=[["new","Шинэ","s-new"],["try","Туршилтад","s-try"],["yes","Авсан","s-yes"],["no","Татгалзсан","s-no"]];
+const QUIZ=[
+  {q:"RDM гэж юу вэ?",a:["Ямар ч RP шалтгаангүйгээр хүн буудах","Машинаар хурдан явах","Радиогоор ярих"],c:0},
+  {q:"VDM гэж юу вэ?",a:["Машинаа засварлах","Машинаар зориуд хүн дайрч алах","Машин хулгайлах"],c:1},
+  {q:"Metagaming гэж юу вэ?",a:["Discord, стрим зэргээс авсан мэдээллийг тоглоом дотор ашиглах","Олон цаг тоглох","Шинэ дүр үүсгэх"],c:0},
+  {q:"Powergaming гэж юу вэ?",a:["Хамгийн хүчтэй зэвсэг авах","Бодит бус үйлдлээр бусдад хариу үйлдэл хийх боломж өгөхгүй байх","Gym-д явах"],c:1},
+  {q:"Үхээд эргэж сэрсэн бол (NLR) юу хийх вэ?",a:["Шууд буцаж очоод өшөө авна","Өмнөх үйл явдлыг мартаж, тэр газар руу тодорхой хугацаанд очихгүй","Найзууддаа хэн алсныг хэлнэ"],c:1}
+];
+const LEVEL=n=>n<=3?"сул":n<=5?"дунд":n<=7?"сайн":n<=9?"маш сайн":"мангас";
+let settings={...DEFAULTS}, apps=[], db=null, canWrite=false, filter="all", confirmDel=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* quiz render */
+$("quiz").innerHTML=QUIZ.map((x,i)=>`<fieldset class="q" style="border:0;padding:0;margin:0"><legend style="padding:0"><b>${i+1}. ${x.q}</b></legend><div class="opts">${x.a.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}" id="q${i}-${j}"><span>${o}</span></label>`).join("")}</div></fieldset>`).join("");
+
+/* sliders */
+["aim","drive","rp"].forEach(k=>{const r=$("f-"+k),o=$("o-"+k);const up=()=>{o.innerHTML=`${r.value}<small>${LEVEL(+r.value)}</small>`;r.style.setProperty("--p",((r.value-1)/9*100)+"%");o.classList.add("bump");setTimeout(()=>o.classList.remove("bump"),150)};r.addEventListener("input",up);up()});
+
+function applySettings(){
+  $("gang-name").textContent=settings.name||"Ганг";
+  $("server-tag").textContent="FiveM · "+(settings.server||"Mgrande сервер");
+  $("s-name").value=settings.name||"";$("s-server").value=settings.server||"";
+  $("s-discord").value=settings.discord||"";$("s-minage").value=settings.minAge||"";
+}
+applySettings();
+
+function show(view){
+  ["form","list","settings"].forEach(v=>{$("view-"+v).hidden=v!==view;$("tab-"+v).setAttribute("aria-selected",v===view)});
+  $("result").hidden=true;
+}
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(b)show(b.dataset.view)});
+
+/* collect */
+function collect(){
+  const quiz=QUIZ.map((x,i)=>{const s=document.querySelector(`input[name=q${i}]:checked`);return s?+s.value:-1});
+  return {
+    ic:$("f-ic").value.trim(),discord:$("f-discord").value.trim(),age:$("f-age").value.trim(),
+    hours:$("f-hours").value,since:$("f-since").value,
+    aim:+$("f-aim").value,drive:+$("f-drive").value,rp:+$("f-rp").value,weapon:$("f-weapon").value,
+    mic:$("f-mic").value,lang:$("f-lang").value,comm:$("f-comm").value.trim(),
+    times:[...document.querySelectorAll("#f-time input:checked")].map(i=>i.value),
+    prev:$("f-prev").value.trim(),ban:$("f-ban").value,clip:$("f-clip").value.trim(),
+    quizScore:quiz.filter((v,i)=>v===QUIZ[i].c).length,quizAnswered:quiz.filter(v=>v>=0).length,
+    sc1:$("f-sc1").value.trim(),sc2:$("f-sc2").value.trim(),why:$("f-why").value.trim()
+  };
+}
+function asText(a){
+  return [`🔫 ${(settings.name||"ГАНГ").toUpperCase()} — ЭЛСЭЛТИЙН АНКЕТ`,
+    `IC нэр: ${a.ic}`,`Discord: ${a.discord}`,`Нас: ${a.age}`,`FiveM цаг: ${a.hours}`,`Сервер дээр: ${a.since}`,
+    `Буудлага: ${a.aim}/10 · Жолоо: ${a.drive}/10 · RP: ${a.rp}/10`,`Зэвсэг: ${a.weapon}`,
+    `Микрофон: ${a.mic} · Хэл: ${a.lang}`,`Харилцааны дутагдал: ${a.comm||"-"}`,`Тоглох цаг: ${a.times.join(", ")}`,
+    `Өмнөх бүлэг: ${a.prev||"-"}`,`Бан/warn: ${a.ban}`,a.clip&&`Клип: ${a.clip}`,
+    `Дүрмийн шалгалт: ${a.quizScore}/${QUIZ.length}`,
+    `Найз баригдвал: ${a.sc1}`,a.sc2&&`Өөр ганг доромжилбол: ${a.sc2}`,`Яагаад: ${a.why}`].filter(Boolean).join("\n");
+}
+
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const a=collect(),err=$("form-error");
+  const fail=m=>{err.textContent=m;err.hidden=false;const b=$("submit");b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake");setTimeout(()=>b.classList.remove("shake"),500)};
+  if(!a.ic||!a.discord||!a.age)return fail("IC нэр, Discord, насаа бөглөнө үү.");
+  if(!/^\d{1,2}$/.test(a.age))return fail("Насаа тоогоор бичнэ үү.");
+  if(settings.minAge&&+a.age<+settings.minAge)return fail(`Уучлаарай, ${settings.minAge}-аас дээш настай хүн элсэх боломжтой.`);
+  if(!a.times.length)return fail("Ихэвчлэн хэзээ тоглодгоо сонгоно уу.");
+  if(a.quizAnswered<QUIZ.length)return fail("Дүрмийн шалгалтын бүх асуултад хариулна уу.");
+  if(!a.sc1||!a.why)return fail("Нөхцөл байдлын асуултууд болон 'Яагаад' хэсгийг бөглөнө үү.");
+  if(!$("f-agree").checked)return fail("Дүрэм дагахыг зөвшөөрч чагтлана уу.");
+  err.hidden=true;
+  if(canWrite&&db){
+    $("submit").disabled=true;$("submit").textContent="Илгээж байна";$("submit").classList.add("loading");
+    try{
+      await db.collection("applications").add({...a,status:"new",createdAt:new Date().toISOString()});
+      $("form").reset();["aim","drive","rp"].forEach(k=>$("f-"+k).dispatchEvent(new Event("input")));
+      showResult(`<div class="banner"><span class="stamp">Бүртгэгдлээ</span><span class="note">${esc(a.ic)}-ийн анкет "Элсэгчид" хэсэгт орлоо. Шалгалтын оноо: ${a.quizScore}/${QUIZ.length}.</span><div class="row"><button class="small" type="button" onclick="show('list')">Элсэгчдийг харах</button><button class="ghost small" type="button" onclick="show('form')">Дахин бөглөх</button></div></div>`);
+    }catch(x){canWrite=false;fallback(a)}
+    finally{$("submit").disabled=false;$("submit").textContent="Анкет илгээх";$("submit").classList.remove("loading")}
+  }else fallback(a);
+});
+function fallback(a){
+  const txt=asText(a);
+  const to=settings.discord?`<b class="num" style="font-family:var(--mono);color:var(--accent)">${esc(settings.discord)}</b> руу`:"бүлгийн ахлагч руу";
+  showResult(`<div class="banner">
+    <span class="stamp">Анкет бэлэн</span>
+    <span class="note">Доорх текстийг хуулаад Discord дээр ${to} илгээ. Ахлагч уншаад хариу өгнө.</span>
+    <pre class="copy" id="copy-text">${esc(txt)}</pre>
+    <div class="row"><button type="button" id="copy-btn">Текст хуулах</button><button class="ghost" type="button" onclick="show('form')">Буцах</button><span id="copy-msg" class="note"></span></div>
+  </div>`);
+  $("copy-btn").addEventListener("click",()=>{
+    const b=$("copy-btn");
+    const ok=()=>{$("copy-msg").textContent="";b.textContent="✓ Хуулагдлаа";b.classList.add("copied");setTimeout(()=>{b.textContent="Текст хуулах";b.classList.remove("copied")},2000)};
+    try{navigator.clipboard.writeText(txt).then(ok,selectCopy)}catch(e){selectCopy()}
+  });
+}
+function selectCopy(){const r=document.createRange();r.selectNodeContents($("copy-text"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copy-msg").textContent="Текст сонгогдлоо, хуулна уу"}
+function showResult(html){$("view-form").hidden=true;$("result").innerHTML=html;$("result").hidden=false;window.scrollTo({top:0})}
+
+/* list */
+const statusOf=id=>STATUSES.find(s=>s[0]===id)||STATUSES[0];
+const total=a=>(a.aim||0)+(a.drive||0)+(a.rp||0)+(a.quizScore||0)*2;
+function meter(label,v,max){return `<div class="score"><small>${label}</small><b>${v}/${max}</b><div class="bar"><i style="width:${v/max*100}%"></i></div></div>`}
+function renderList(){
+  $("tab-count").textContent=apps.length?`(${apps.length})`:"";
+  const counts={all:apps.length};STATUSES.forEach(s=>counts[s[0]]=apps.filter(a=>(a.status||"new")===s[0]).length);
+  $("filters").innerHTML=[["all","Бүгд"],...STATUSES].map(s=>`<button class="chip" type="button" data-f="${s[0]}" aria-pressed="${filter===s[0]}">${s[1]}<span>${counts[s[0]]}</span></button>`).join("");
+  const q=$("search").value.trim().toLowerCase(), sort=$("sort").value;
+  let shown=apps.filter(a=>(filter==="all"||(a.status||"new")===filter)&&(!q||[a.ic,a.discord].join(" ").toLowerCase().includes(q)));
+  if(sort==="aim")shown.sort((x,y)=>(y.aim||0)-(x.aim||0));
+  else if(sort==="quiz")shown.sort((x,y)=>(y.quizScore||0)-(x.quizScore||0));
+  else if(sort==="total")shown.sort((x,y)=>total(y)-total(x));
+  if(!apps.length){$("apps").innerHTML=`<div class="card empty">Одоохондоо анкет ирээгүй байна.<br>"Анкет" хэсгээс нэгийг туршиж бөглөөд үз.</div>`;return}
+  if(!shown.length){$("apps").innerHTML=`<div class="card empty">Энэ шүүлтүүрт тохирох элсэгч алга.</div>`;return}
+  $("apps").innerHTML=shown.map(a=>{const s=statusOf(a.status);const d=a.createdAt?new Date(a.createdAt):null;
+  const clip=/^https?:\/\//i.test(a.clip||"")?`<a href="${esc(a.clip)}" target="_blank" rel="noopener">${esc(a.clip)}</a>`:esc(a.clip);
+  return `<article class="app">
+    <div class="app-top">
+      <div><h3>${esc(a.ic)}</h3>
+        <div class="meta"><span>Discord: <span class="num">${esc(a.discord)}</span></span><span>${esc(a.age)} настай</span><span>${esc(a.hours)}</span>${d?`<span>${d.getMonth()+1}/${d.getDate()}</span>`:""}</div></div>
+      <span class="pill ${s[2]}">${s[1]}</span>
+    </div>
+    <div class="scores">${meter("Буудлага",a.aim||0,10)}${meter("Жолоо",a.drive||0,10)}${meter("RP",a.rp||0,10)}</div>
+    <div class="meta"><span>Шалгалт: <b style="color:${(a.quizScore||0)>=4?"var(--ok)":(a.quizScore||0)>=3?"var(--warn)":"var(--bad)"}">${a.quizScore??"-"}/${QUIZ.length}</b></span><span>Зэвсэг: ${esc(a.weapon)}</span><span>Мик: ${esc(a.mic)}</span><span>Бан: ${esc(a.ban)}</span><span>${esc((a.times||[]).join(", "))}</span></div>
+    <dl>
+      ${a.comm?`<div><dt>Харилцааны дутагдал</dt><dd>${esc(a.comm)}</dd></div>`:""}
+      ${a.prev?`<div><dt>Өмнөх бүлэг</dt><dd>${esc(a.prev)}</dd></div>`:""}
+      <div><dt>Найз баригдвал</dt><dd>${esc(a.sc1)}</dd></div>
+      ${a.sc2?`<div><dt>Өөр ганг доромжилбол</dt><dd>${esc(a.sc2)}</dd></div>`:""}
+      <div><dt>Яагаад элсэх гэж байгаа</dt><dd>${esc(a.why)}</dd></div>
+      ${a.clip?`<div><dt>Клип</dt><dd>${clip}</dd></div>`:""}
+    </dl>
+    <div class="app-actions">
+      <label for="st-${a.id}" class="note">Төлөв</label>
+      <select id="st-${a.id}" data-status="${a.id}">${STATUSES.map(x=>`<option value="${x[0]}" ${x[0]===(a.status||"new")?"selected":""}>${x[1]}</option>`).join("")}</select>
+      <span style="flex:1"></span>
+      ${confirmDel===a.id?`<span class="note">Устгах уу?</span><button class="danger small" type="button" data-del-yes="${a.id}">Тийм</button><button class="ghost small" type="button" data-del-no>Үгүй</button>`:`<button class="ghost small" type="button" data-del="${a.id}">Устгах</button>`}
+    </div>
+  </article>`}).join("");
+}
+$("filters").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(b){filter=b.dataset.f;renderList()}});
+$("search").addEventListener("input",renderList);
+$("sort").addEventListener("change",renderList);
+$("apps").addEventListener("change",async e=>{const id=e.target.dataset.status;if(!id||!db)return;try{await db.doc("applications/"+id).update({status:e.target.value})}catch(x){}});
+$("apps").addEventListener("click",async e=>{
+  const t=e.target;
+  if(t.dataset.del){confirmDel=t.dataset.del;renderList()}
+  else if("delNo" in t.dataset){confirmDel=null;renderList()}
+  else if(t.dataset.delYes&&db){const id=t.dataset.delYes;confirmDel=null;try{await db.doc("applications/"+id).delete()}catch(x){}}
+});
+
+/* settings */
+$("settings-form").addEventListener("submit",async e=>{
+  e.preventDefault();if(!db)return;
+  const next={name:$("s-name").value.trim()||"Ганг",server:$("s-server").value.trim(),discord:$("s-discord").value.trim(),minAge:$("s-minage").value.trim()};
+  $("s-save").disabled=true;
+  try{await db.doc("public/settings").set(next);$("s-msg").textContent="Хадгалагдлаа"}
+  catch(x){$("s-msg").textContent="Хадгалж чадсангүй. Дахин оролдоно уу."}
+  finally{$("s-save").disabled=false}
+});
+
+/* cinematic background: drifting light blobs */
+(function(){
+  const c=$("fx"),x=c.getContext("2d");let w,h,dpr;
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const blobs=[[242,183,5,.55],[224,60,40,.45],[90,70,200,.35],[242,140,20,.4]].map((col,i)=>({col,a:i*1.7,r:.45+i*.08,s:.00012+i*.00004}));
+  function size(){dpr=Math.min(devicePixelRatio||1,1.5);w=c.width=innerWidth*dpr*.5;h=c.height=innerHeight*dpr*.5}
+  function frame(t){
+    x.fillStyle="#060606";x.fillRect(0,0,w,h);
+    x.globalCompositeOperation="lighter";
+    blobs.forEach((b,i)=>{
+      const px=w*(.5+.38*Math.cos(t*b.s+b.a)),py=h*(.35+.3*Math.sin(t*b.s*1.3+b.a*2));
+      const R=Math.max(w,h)*b.r,g=x.createRadialGradient(px,py,0,px,py,R);
+      g.addColorStop(0,`rgba(${b.col[0]},${b.col[1]},${b.col[2]},${b.col[3]*.5})`);g.addColorStop(1,"rgba(0,0,0,0)");
+      x.fillStyle=g;x.fillRect(0,0,w,h);
+    });
+    x.globalCompositeOperation="source-over";
+    if(!still)requestAnimationFrame(frame);
+  }
+  size();addEventListener("resize",size);requestAnimationFrame(frame);
+})();
+
+/* marquee */
+function marquee(){
+  const items=[`<b>${esc(settings.name||"Ганг")}</b> элсэлт нээлттэй`,`FiveM · ${esc(settings.server||"RP сервер")}`,"Буудлага","Харилцаа","Дүрэм","Үнэнч байдал","Шалгарсан нь Discord-оор холбогдоно"];
+  const row=items.map(t=>`<span>${t}</span><span>✦</span>`).join("");
+  $("mq").innerHTML=row+row;
+}
+marquee();
+const _apply=applySettings;applySettings=function(){_apply();marquee()};
+
+/* progress */
+const STEP_NAMES=["Хувийн мэдээлэл","Ур чадвар","Харилцаа","Туршлага","Дүрмийн шалгалт","Нөхцөл байдал"];
+function progress(){
+  const a=collect();
+  const checks=[
+    [!!a.ic,!!a.discord,!!a.age],
+    [true],
+    [a.times.length>0],
+    [true],
+    QUIZ.map((_,i)=>!!document.querySelector(`input[name=q${i}]:checked`)),
+    [!!a.sc1,!!a.why,$("f-agree").checked]
+  ];
+  const flat=checks.flat(),done=flat.filter(Boolean).length,pct=Math.round(done/flat.length*100);
+  $("prog-bar").style.width=pct+"%";$("prog-pct").textContent=pct+"%";
+  const stepDone=checks.map(c=>c.every(Boolean));
+  [...$("steps").children].forEach((el,i)=>el.classList.toggle("done",stepDone[i]));
+  const next=stepDone.indexOf(false);
+  $("prog-label").textContent=next<0?"Бэлэн — илгээж болно":STEP_NAMES[next];
+}
+$("form").addEventListener("input",progress);$("form").addEventListener("change",progress);progress();
+
+/* ripple on every button */
+document.addEventListener("pointerdown",e=>{
+  const b=e.target.closest("button");if(!b||b.disabled||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height),sp=document.createElement("span");
+  sp.className="ripple";sp.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+  b.appendChild(sp);setTimeout(()=>sp.remove(),650);
+});
+
+/* spotlight follows pointer */
+document.addEventListener("pointermove",e=>{
+  const el=e.target.closest(".card,.app");if(!el)return;
+  const r=el.getBoundingClientRect();el.style.setProperty("--mx",(e.clientX-r.left)+"px");el.style.setProperty("--my",(e.clientY-r.top)+"px");
+});
+
+/* boot */
+(async()=>{
+  try{
+    const [dbx,user]=await Promise.all([claude.use("db"),claude.use("user")]);
+    db=dbx;if(!db)return;
+    db.doc("public/settings").onSnapshot(s=>{if(s.exists){settings={...DEFAULTS,...s.data()};applySettings()}},()=>{});
+    const editor=user?await user.canEdit():false;
+    if(!editor)return;
+    canWrite=true;
+    $("tabs").hidden=false;$("owner-hint").hidden=false;
+    $("intro").textContent="Ирсэн анкетуудаа \"Элсэгчид\" хэсгээс харна. Тохиргоонд бүлгийн нэр, Discord-оо оруулаарай.";
+    renderList();
+    $("apps").innerHTML=`<div class="card empty">Ачаалж байна…</div>`;
+    const timer=setTimeout(()=>{if(!apps.length)$("apps").innerHTML=`<div class="card empty">Одоохондоо ачаалж чадахгүй байна. Интернэтээ шалгаад хэсэг хүлээнэ үү.</div>`},10000);
+    db.collection("applications").orderBy("createdAt","desc").onSnapshot(snap=>{
+      if(!snap.metadata.fromCache)clearTimeout(timer);
+      apps=snap.docs.map(d=>({id:d.id,...d.data()}));renderList();
+    },()=>{clearTimeout(timer);$("apps").innerHTML=`<div class="card empty">Анкетуудыг уншиж чадсангүй. Хуудсыг дахин нээнэ үү.</div>`});
+  }catch(e){}
+})();
+</script>
+
+</body></html>
