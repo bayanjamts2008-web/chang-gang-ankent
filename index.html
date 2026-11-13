@@ -300,16 +300,10 @@ button.copied{background:var(--ok)!important;color:#05140b!important;animation:p
       </div>
 
       <div class="sec">
-        <h2><i>05</i>Дүрмийн шалгалт</h2>
         <div class="quiz full" id="quiz"></div>
       </div>
 
       <div class="sec">
-        <h2><i>06</i>Нөхцөл байдал</h2>
-        <label class="field full" for="f-sc1">Хамт явсан найзыг чинь цагдаа барьчихлаа. Чи юу хийх вэ? <span class="req">*</span><textarea id="f-sc1" maxlength="800"></textarea></label>
-        <label class="field full" for="f-sc2">Өөр гангийн хүн танай нутаг дэвсгэрт ирээд доромжилж байна. Яах вэ?<textarea id="f-sc2" maxlength="800"></textarea></label>
-        <label class="field full" for="f-why">Яагаад манай бүлэгт орох гэж байна? Юугаараа хувь нэмэр оруулах вэ? <span class="req">*</span><textarea id="f-why" maxlength="800"></textarea></label>
-        <label class="agree full"><input type="checkbox" id="f-agree"><span>Бүлгийн дүрэм, серверийн дүрмийг дагаж, ахлагчийн үгэнд орно. OOC асуудлаа тоглоом дотор авчрахгүй.</span></label>
       </div>
 
       <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
@@ -349,11 +343,7 @@ const DEFAULTS={name:"Chang gang",server:"Mgrande",discord:"https://discord.gg/m
 const DISCORD_INVITE="https://discord.gg/mpH3wxhJc";
 const STATUSES=[["new","Шинэ","s-new"],["try","Туршилтад","s-try"],["yes","Авсан","s-yes"],["no","Татгалзсан","s-no"]];
 const QUIZ=[
-  {q:"RDM гэж юу вэ?",a:["Ямар ч RP шалтгаангүйгээр хүн буудах","Машинаар хурдан явах","Радиогоор ярих"],c:0},
-  {q:"VDM гэж юу вэ?",a:["Машинаа засварлах","Машинаар зориуд хүн дайрч алах","Машин хулгайлах"],c:1},
-  {q:"Metagaming гэж юу вэ?",a:["Discord, стрим зэргээс авсан мэдээллийг тоглоом дотор ашиглах","Олон цаг тоглох","Шинэ дүр үүсгэх"],c:0},
-  {q:"Powergaming гэж юу вэ?",a:["Хамгийн хүчтэй зэвсэг авах","Бодит бус үйлдлээр бусдад хариу үйлдэл хийх боломж өгөхгүй байх","Gym-д явах"],c:1},
-  {q:"Үхээд эргэж сэрсэн бол (NLR) юу хийх вэ?",a:["Шууд буцаж очоод өшөө авна","Өмнөх үйл явдлыг мартаж, тэр газар руу тодорхой хугацаанд очихгүй","Найзууддаа хэн алсныг хэлнэ"],c:1}
+  
 ];
 const LEVEL=n=>n<=3?"сул":n<=5?"дунд":n<=7?"сайн":n<=9?"маш сайн":"мангас";
 let settings={...DEFAULTS}, apps=[], db=null, canWrite=false, filter="all", confirmDel=null;
